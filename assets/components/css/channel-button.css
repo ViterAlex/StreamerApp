@@ -1,0 +1,19 @@
+@import url('/css/common.css');
+
+button {
+  border: 0px;
+  cursor: pointer;
+  border-radius: 15px;
+  padding: 10px;
+  width: auto;
+  font-size: 4rem;
+  color: white;
+}
+
+#play {
+  background-color: var(--play-bg);
+}
+
+#stop {
+  background-color: var(--stop-bg);
+}

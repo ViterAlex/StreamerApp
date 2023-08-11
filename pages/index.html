@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draft</title>
+  <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css">
+  <template id="password-field-template">
+    <link rel="stylesheet" href="/components/css/password-field.css">
+    <div>
+      <button class="show play"><i class="fas fa-play "> </i> </button>
+      <button class="hide stop"><i class="fas fa-stop"></i> </button>
+    </div>
+  </template>
+</head>
+
+<body>
+  <div id="qrWrapper">
+    <a id="qrClose" href="#" class="close"></a>
+    <a id="qrSave" title="Click to save" download="qr.png">
+      <img id="qrImg" src="" alt="">
+    </a>
+  </div>
+  <div class="wrapper">
+    <header class="header">
+      <input id="qrText" class="qrInput" placeholder="Текст для QR-коду"
+        type="text">
+      <button id="qrCreate" type="button" title="Згенерувати QR-код">
+        <i class="fas fa-qrcode"></i> Зробити
+      </button>
+    </header>
+    <div class="content">
+      <div id="channelButtons">
+        <!-- Put buttons here -->
+      </div>
+    </div>
+    <footer class="row" id="footer">
+      <div id="clubInfo"></div>
+      <div class="goToAdmin"><i class="fas fa-wrench"></i> Налаштування</div>
+    </footer>
+  </div>
+</body>
+<script src="/components/channel-button.js"></script>
+<script type="module" src=" /scripts/main.js"></script>
+<script type="module">
+  import { setupEvents, getSettings, getStreams, getClubInfo } from "/scripts/main.js";
+  getSettings();
+  setupEvents();
+  getStreams();
+  getClubInfo();
+
+</script>
+
+</html>

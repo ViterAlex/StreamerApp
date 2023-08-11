@@ -1,0 +1,72 @@
+@import url('/css/fontawesome.min.css');
+@import url('/css/common.css');
+
+.action-items {
+  margin-left: 4px;
+}
+
+.fas {
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
+}
+
+.fas:hover {
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+}
+
+.item-editor,
+.item-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.fa-check {
+  color: #28A745;
+}
+
+.fa-xmark,
+.fa-trash-can {
+  color: #C82333;
+}
+
+.list-item:first-child #move-up-icon {
+  display: none;
+}
+
+.list-item:last-child #move-down-icon {
+  display: none;
+}
+
+.list-item {
+  border-radius: var(--border-radius);
+  border: var(--control-border);
+  background: #f2f2f2;
+  padding: 5px;
+}
+
+.list-items {
+  display: grid;
+  gap: 2px;
+}
+
+#item-editor-input {
+  font-size: 1.25rem;
+  max-width: 200px;
+}
+
+list-editor {
+  display: grid;
+}
+
+:host {
+  overflow: hidden;
+  min-width: 200px;
+  font-size: 1.25rem;
+}
+
+.toolbar {
+  justify-content: end;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
