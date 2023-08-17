@@ -1,44 +1,46 @@
 import xht from './xht.js';
 
 const fillCities = () => {
-  const cities = document.querySelector('#citiesSelect');
-  const settings = JSON.parse(localStorage.getItem('settings'));
-  cities.addEventListener('change', (ev) => {
+  const citiesSelect = document.querySelector('#citiesSelect');
+  const cities = JSON.parse(localStorage.getItem('cities'));
+  const selectedCity = localStorage.getItem('selectedCity');
+  const selectedClub = localStorage.getItem('selectedClub');
+  citiesSelect.addEventListener('change', (ev) => {
     //Заповнення списку з клубами при зміні міста
     const clubsSelect = document.querySelector('#clubsSelect');
     clubsSelect.innerHTML = '';
-    const clubs = settings.cities.find(c => c.name == ev.target.value).clubs;
+    const clubs = cities.find(c => c.name == ev.target.value).clubs;
     localStorage.setItem('selectedCity', ev.target.value);
     localStorage.setItem('clubs', JSON.stringify(clubs));
-    if (clubs.length > 0) {
-      clubsSelect.classList.remove('hide');
-      document.querySelector('#editClubs').classList.remove('hide');
-    }
-    else {
-      clubsSelect.classList.add('hide');
-      document.querySelector('#editClubs').classList.add('hide');
-    }
     for (const club of clubs) {
       const opt = document.createElement('option');
       opt.innerText = club;
       opt.setAttribute('value', club);
-      if (settings.club == club) {
-        opt.setAttribute('selected', true);
-      }
       clubsSelect.appendChild(opt);
+      if (selectedClub == club) {
+        clubsSelect.value = club;
+      }
     }
   });
+  citiesSelect.innerHTML = '';
   //Заповнення списку з містами
-  for (const city of settings.cities) {
+  for (const city of cities) {
     const opt = document.createElement('option');
     opt.innerText = city.name;
     opt.setAttribute('value', city.name);
-    if (settings.city == city.name) {
-      opt.setAttribute('selected', true);
+    citiesSelect.appendChild(opt);
+    if (selectedCity == city.name) {
+      citiesSelect.value = city.name;
     }
-    cities.appendChild(opt);
   }
-  cities.dispatchEvent(new Event('change'));
+
+  const clubs = document.querySelector('#clubsSelect');
+  clubs.addEventListener('change', (ev) => {
+    localStorage.setItem('selectedClub', ev.target.value);
+  });
+
+  citiesSelect.dispatchEvent(new Event('change'));
+  clubs.dispatchEvent(new Event('change'));
 };
 
 const fillChannels = () => {
@@ -49,40 +51,25 @@ const fillChannels = () => {
   for (const prop of ['login', 'password']) {
     document.querySelector(`#${prop}`).setAttribute('value', settings[prop]);
   }
-  const prefix = 'ch_';
-  let n = 0;
-  for (const channel of channels) {
-    const row = document.querySelector('#channelTemplate').cloneNode(true);
-    row.setAttribute('id', `${prefix}${n}`);
-    for (const prop of Object.keys(channel)) {
-      const input = row.querySelector(`#${prefix}${prop}`);
-      if (input) {
-        input.setAttribute('value', channel[prop]);
-        input.setAttribute('id', `${prefix}${prop}[${n}]`);
-        input.setAttribute('name', input['id']);
-      }
-    }
-    let elem = row.querySelector(`#${prefix}audio`);
-    elem.setAttribute('checked', true);
-    elem.setAttribute('id', `${prefix}audio[${n}]`);
-    elem.setAttribute('name', elem['id']);
+  channels.forEach((channel, n) => {
+    const ch = document.createElement('channel-fields');
+    ch.setAttribute('value', JSON.stringify(channel));
+    ch.setAttribute('index', `${n}`);
+    ch.setAttribute('name', `channels[${n}]`);
+    ch.addEventListener('deleteChannel', (ev) => {
+      deleteChannel(ev);
+    });
+    wrapper.appendChild(ch);
+  });
+};
 
-    elem = row.querySelector(`#${prefix}delete`);
-    elem.setAttribute('id', `${prefix}delete[${n}]`);
-    elem.setAttribute('name', elem['id']);
-    elem.addEventListener('click', (ev) => {
-      const ch_index = parseInt(row['id'].slice(prefix.length));
-      const settings = JSON.parse(localStorage.getItem('settings'));
-      settings.channels.splice(ch_index, 1);
-      localStorage.setItem('settings', JSON.stringify(settings));
-      row.remove();
-    });
-    n++;
-    row.querySelector('#loginPassSpoiler').addEventListener('click', (ev) => {
-      row.querySelector('.animateWrapper').classList.toggle('open');
-    });
-    wrapper.appendChild(row);
-  }
+const deleteChannel = (ev) => {
+  ev.target.remove();
+  document
+    .querySelector('#channelsWrapper')
+    .querySelectorAll('channel-fields')
+    .forEach((el, n) => el.setAttribute('name', `channels[${n}]`));
+  return true;
 };
 
 const assignEvents = () => {
@@ -91,12 +78,12 @@ const assignEvents = () => {
   document.querySelector('#restartWebServer').addEventListener('click', (ev) => restart());
   document.querySelector('#addChannel').addEventListener('click', (ev) => addChannel());
   document.querySelector('list-editor').addEventListener('onsave', (ev) => {
-    ev.target.parentElement.classList.remove('open');
-    // ev.target.parentElement.classList.add('hide');
+    editorSave();
+    // alert(`Saving ${editor.getAttribute('subject')}`)
+    // ev.target.parentElement.classList.remove('open');
   });
   document.querySelector('list-editor').addEventListener('ondiscard', (ev) => {
     ev.target.parentElement.classList.remove('open');
-    // ev.target.parentElement.classList.add('hide');
   });
   for (const el of document.querySelectorAll('.overlay .fas')) {
     el.addEventListener('click', (ev) => showHidePassword(ev));
@@ -105,10 +92,35 @@ const assignEvents = () => {
   document.querySelector('#saveSettings').addEventListener('click', (ev) => {
     const form = document.querySelector('#settingsForm');
     const fd = new FormData(form);
+    fd.append('city', localStorage.getItem('selectedCity'));
+    fd.append('club', localStorage.getItem('selectedClub'));
     const x = new XMLHttpRequest();
     x.open('POST', '/');
     x.send(fd);
   });
+};
+
+const editorSave = () => {
+  const editor = document.querySelector('list-editor');
+  const subject = editor.getAttribute('subject');
+  switch (subject) {
+    case 'cities':
+      saveCities(editor);
+      fillCities();
+      break;
+    case 'clubs':
+      saveClubs(editor);
+      fillCities();
+      break;
+    default:
+      break;
+  }
+  editor.parentElement.classList.remove('open');
+
+};
+
+const clone = (obj) => {
+  return JSON.parse(JSON.stringify(obj));
 };
 
 const showHidePassword = (ev) => {
@@ -141,16 +153,15 @@ const edit = (o) => {
   const opened = wrapper.classList.contains('open');
   if (opened) {
     wrapper.classList.remove('open');
-    // wrapper.classList.remove('hide');
   }
   else {
     wrapper.classList.add('open');
   }
+  editor.setAttribute('subject', o);
   switch (o) {
     case 'cities':
-      const settings = JSON.parse(localStorage.getItem('settings'));
       editor.setAttribute('save-button-title', 'Зберегти список міст');
-      editor.items = settings.cities.map(c => c.name);
+      editor.items = JSON.parse(localStorage.getItem('cities')).map(el => el.name);
       break;
     case 'clubs':
       editor.items = JSON.parse(localStorage.getItem('clubs'));
@@ -162,6 +173,52 @@ const edit = (o) => {
   if (opened) {
     wrapper.classList.add('open');
   }
+};
+
+const saveClubs = (editor) => {
+
+};
+
+const saveCities = (editor) => {
+  let cities = JSON.parse(localStorage.getItem('cities'));
+  let empty = new Array(editor.__items.length);
+  for (let i = 0; i < empty.length; i++) {
+    const editedItem = editor.__items[i];
+    //edited value if any
+    const val = editedItem.newValue === ''
+      ? editedItem.value
+      : editedItem.newValue;
+    //added item
+    if (editedItem.index >= cities.length) {
+      const idx = editedItem.newIndex > -1
+        ? editedItem.newIndex
+        : editedItem.index;
+      empty[idx] = { name: val, clubs: [] };
+      continue;
+    }
+    const item = cities[editedItem.index];
+    //moved item
+    if (editedItem.newIndex >= 0) {
+      empty[editedItem.newIndex] = clone(item);
+      empty[editedItem.newIndex].name = val;
+      continue;
+    }
+    //edited item
+    if (editedItem.newValue !== '') {
+      empty[editedItem.index] = clone[item];
+      empty[editedItem.index].name = editedItem.newValue;
+      continue;
+    }
+    //deleted item
+    if (editedItem.deleted) {
+      empty[editedItem.index] = { deleted: true };
+      continue;
+    }
+    empty[i] = clone(item);
+  }
+  empty = empty.filter(el => Object.keys(el).indexOf('deleted') == -1);
+  cities = Array.from(empty);
+  localStorage.setItem('cities', JSON.stringify(cities));
 };
 
 export { assignEvents, edit, fillChannels, fillCities, restart };

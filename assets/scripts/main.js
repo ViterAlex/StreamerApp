@@ -39,13 +39,16 @@ const setupEvents = () => {
   document.querySelector('#qrClose').addEventListener('click', hideQr);
   document.querySelector('#qrSave').addEventListener('click', hideQr);
   document.querySelector('#qrCreate').addEventListener('click', createQr);
-  document.querySelector('#footer .goToAdmin').addEventListener('click', goToAdminPage);
+  document.querySelector('footer .goToAdmin').addEventListener('click', goToAdminPage);
 };
 
 const getSettings = () => {
   xht('/', 'verb=getSettings', (res) => {
     console.log(res);
     localStorage.setItem('settings', JSON.stringify(res));
+    localStorage.setItem('cities', JSON.stringify(res.cities));
+    localStorage.setItem('selectedClub', res.club);
+    localStorage.setItem('selectedCity', res.city);
   });
 };
 
@@ -64,14 +67,19 @@ const getChannels = () => {
       btn.name= channel.name;
       btn.addEventListener('click', (ev) => {
         xht('/', `verb=${ev.target.state}&key=${ev.target.key}`);
+        ev.target.state = 'wait';
+        setTimeout(() => {
+          ev.target.state = 'stop';
+        }, 3000);
       });
       wrapper.appendChild(btn);
     }
+    wrapper.classList.remove('hide');
   });
 };
 
 const getClubInfo = () => {
-  const wrapper = document.querySelector('#clubInfo');
+  const wrapper = document.querySelector('.clubInfo');
   const settings = JSON.parse(localStorage.getItem('settings'));
   wrapper.innerHTML = `${settings.city} — ${settings.club}`;
 };

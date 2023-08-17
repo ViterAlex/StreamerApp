@@ -45,12 +45,15 @@
 }
 
 :root {
-  --select-border: #777;
-  --select-focus: blue;
-  --select-arrow: var(--select-border);
+  --border: #777;
+  --focus: blue;
+  --input-border: 1px solid var(--border);
+  --focus-border: 2px solid var(--focus);
+  --select-arrow: var(--border);
   --control-border: 1px solid#ccc;
-  --border-radius:5px;
+  --border-radius: 5px;
   --background: white;
+  --footbik-color: #5A4F93;
   --text: black;
   --stop-bg: #C82333;
   --play-bg: #27A444;

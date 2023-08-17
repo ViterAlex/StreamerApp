@@ -27,19 +27,21 @@
   </div>
   <div class="wrapper">
     <header class="header">
-      <input id="qrText" class="qrInput" placeholder="Текст для QR-коду"
+      <div>
+        <input id="qrText" class="qrInput" placeholder="Текст для QR-коду"
         type="text">
-      <button id="qrCreate" type="button" title="Згенерувати QR-код">
+        <button id="qrCreate" type="button" title="Згенерувати QR-код">
         <i class="fas fa-qrcode"></i> Зробити
       </button>
+      </div>
     </header>
     <div class="content">
-      <div id="channelButtons">
+      <div id="channelButtons" class="hide">
         <!-- Put buttons here -->
       </div>
     </div>
-    <footer class="row" id="footer">
-      <div id="clubInfo"></div>
+    <footer>
+      <div class="clubInfo"></div>
       <div class="goToAdmin"><i class="fas fa-wrench"></i> Налаштування</div>
     </footer>
   </div>

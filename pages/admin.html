@@ -49,76 +49,48 @@
 
 <body>
   <div class="wrapper">
-    <header class="header gap">
-      <a class="fas fa-house fa-xl item-left headerIcon" href="/"
+    <header>
+      <div>
+        <a class="fas fa-house fa-xl item-left headerIcon" href="/"
         title="Повернутись"></a>
-      <i class="fas fa-plus fa-xl headerIcon" title="Додати канал"
+        <i class="fas fa-plus fa-xl headerIcon" title="Додати канал"
         id="addChannel"></i>
-      <i class="fas fa-floppy-disk fa-xl headerIcon" id="saveSettings"
+        <i class="fas fa-floppy-disk fa-xl headerIcon" id="saveSettings"
         title="Зберегти налаштування"></i>
-      <i class="fas fa-arrows-rotate fa-xl headerIcon" id="restartWebServer"
+        <i class="fas fa-arrows-rotate fa-xl headerIcon" id="restartWebServer"
         title="Перезапустити веб-сервер"></i>
+      </div>
     </header>
-    <div class="content column">
+    <div class="content top">
       <div class="row gap">
         <select name="cities" id="citiesSelect"></select>
         <i class="fas fa-pen" id="editCities" title="Редагувати міста"></i>
         <select name="clubs" id="clubsSelect"></select>
         <i class="fas fa-pen" id="editClubs" title="Редагувати клуби"></i>
       </div>
-      <div class="animateWrapper">
-        <list-editor></list-editor>
-      </div>
-      <div class="row gap" id="channelTemplate">
-        <input type="text" name="ch_name" id="ch_name" placeholder="Ім'я">
-        <input type="text" name="ch_ip" id="ch_ip" placeholder="IP">
-        <input type="text" name="ch_port" id="ch_port" placeholder="Порт">
-        <input type="text" name="ch_url" id="ch_url" placeholder="Посилання">
-        <input type="text" name="ch_key" id="ch_key" placeholder="Ключ YouTube">
-        <label class="fancy-checkbox">
-          <input type="checkbox" name="ch_audio" id="ch_audio">
-          <i class="fas fa-volume-high checked" title="Звук ввімкнено"></i>
-          <i class="fas fa-volume-mute unchecked" title="Звук вимкнено"></i>
-        </label>
-        <button id='ch_delete' title="Видалити канал"><i
-            class="fas fa-trash-can"></i></button>
-        <div class="break"></div>
-        <div id="chLoginPassSpoiler">
-          <a href="#" id="loginPassSpoiler">Логін та пароль, якщо
-            відрізняються
-            від загальних</a>
-          <div class="animateWrapper">
-            <div class="row gap left">
-              <input type="text" name="ch_login" id="ch_login"
-                placeholder="Логін">
-              <div class="overlay">
-                <input type="password" name="ch_password" id="ch_password"
-                  placeholder="Пароль">
-                <i class="fas fa-light fa-eye"></i>
-              </div>
-            </div>
-          </div>
+      <div class="row">
+        <div class="animateWrapper">
+          <list-editor></list-editor>
         </div>
-        <div class="break height"></div>
       </div>
       <form action="/" method="post" id="settingsForm">
         <input type="hidden" name="verb" value="saveSettings">
-        <div class="row gap left">
+        <div >
           <input type="text" name="login" id="login" placeholder="Логін">
-          <div class="overlay">
-            <input type="password" name="password" id="password"
-              placeholder="Пароль">
-            <i class="fas fa-light fa-eye"></i>
-          </div>
+          <password-field name="password" id="password">
+          
+          </password-field>
         </div>
         <div class="break height"></div>
-        <div class="column gap" id="channelsWrapper">
+        <div class="" id="channelsWrapper">
         </div>
 
       </form>
     </div>
   </div>
   <script src="/components/list-editor.js"></script>
+  <script src="/components/password-field.js"></script>
+  <script src="/components/channel-fields.js"></script>
   <script type="module">
     import { fillCities, fillChannels, assignEvents } from "/scripts/admin.js";
     fillCities();

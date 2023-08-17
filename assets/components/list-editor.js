@@ -41,6 +41,7 @@ class ListEditor extends HTMLElement {
         'value': arr[i],
         'newIndex': -1,
         'newValue': '',
+        'moved': false,
         'deleted': false
       });
     }
@@ -200,6 +201,7 @@ class ListEditor extends HTMLElement {
   __moveUp(listItem) {
     const index = getIndex(listItem);
     this.__items[index].newIndex = index - 1;
+    this.__items[index].moved = true;
     this.__items[index - 1].newIndex = index;
     swap(this.__items, index, index - 1);
     this.__updateView();
@@ -208,6 +210,7 @@ class ListEditor extends HTMLElement {
   __moveDown(listItem) {
     const index = getIndex(listItem);
     this.__items[index].newIndex = index + 1;
+    this.__items[index].moved = true;
     this.__items[index + 1].newIndex = index;
     swap(this.__items, index + 1, index);
     this.__updateView();
@@ -218,6 +221,15 @@ class ListEditor extends HTMLElement {
       items: this.__items,
       bubbles: true
     }));
+    this.__items.forEach(i => {
+      i.index = i.newIndex == -1 ? i.index : i.newIndex;
+      i.newIndex = -1;
+      i.value = i.newValue == '' ? i.value : i.newValue;
+      i.newValue = '';
+      i.moved = false;
+    });
+    this.__items = this.__items.filter(i => !i.deleted);
+    this.__updateView();
   }
 
   __discardChanges() {

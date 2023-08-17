@@ -1,0 +1,104 @@
+@import url('/css/common.css');
+
+:host {
+  display: grid;
+  column-gap: 4px;
+  grid-template-areas:
+      'name ip port url key audio delete'
+      'spoiler spoiler spoiler . . . .';
+    grid-template-columns: auto auto auto 1fr auto auto auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.name,
+.login {
+  grid-area: name;
+  max-width: 150px;
+}
+
+.ip {
+  grid-area: ip;
+  max-width: 180px;
+}
+
+.port {
+  grid-area: port;
+  max-width: 80px;
+}
+
+.url {
+  grid-area: url;
+}
+
+.key {
+  grid-area: key;
+  max-width: 270px;
+}
+
+.delete {
+  grid-area: delete;
+  background-color: transparent;
+}
+
+.spoiler {
+  grid-area: spoiler;
+}
+
+a#spoilerHeader {
+  text-decoration: none;
+}
+
+a#spoilerHeader:visited {
+  color: blue;
+}
+
+input,
+button {
+  border: var(--control-border);
+  outline: none;
+  border-radius: var(--border-radius);
+  min-height: 2rem;
+  margin: 0px;
+
+}
+
+input[type='text'],
+input[type='password'],
+button,
+textarea {
+  border: var(--input-border);
+  font-size: 1.25rem;
+}
+
+input[type='text']:focus,
+input[type='password']:focus,
+button:focus {
+  border: var(--focus-border);
+}
+
+.fa-trash-can {
+  color: #C82333;
+}
+
+.fancy-checkbox input[type="checkbox"],
+.fancy-checkbox .checked {
+  display: none;
+  aspect-ratio: 1;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked~.checked {
+  display: inline-block;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked~.unchecked {
+  display: none;
+}
+
+.fancy-checkbox {
+  grid-area: audio;
+  align-self: center;
+  aspect-ratio: 1;
+}

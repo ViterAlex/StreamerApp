@@ -1,7 +1,13 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <link rel="stylesheet" href="/components/css/channel-button.css">
+    <link rel="stylesheet" href="/components/css/spinner.css">
     <div>
+      <div class="loader hide" id="wait">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10"/>
+        </svg>
+      </div>
       <button class="show play" id="play">
         <i class="fas fa-play "></i>
       </button>
@@ -100,23 +106,40 @@ class ChannelButton extends HTMLElement {
   __stateChanged() {
     const play = this.root.querySelector('#play');
     const stop = this.root.querySelector('#stop');
+    const wait = this.root.querySelector('#wait');
     switch (this.state) {
       case 'play':
-        play.classList.add('show');
-        play.classList.remove('hide');
-        stop.classList.add('hide');
-        stop.classList.remove('show');
+        this.__hideOrshow(play);
+        this.__hideOrshow(stop, true);
+        this.__hideOrshow(wait, true);
         break;
       case 'stop':
-        play.classList.add('hide');
-        play.classList.remove('show');
-        stop.classList.remove('hide');
-        stop.classList.add('show');
+        this.__hideOrshow(play, true);
+        this.__hideOrshow(stop);
+        this.__hideOrshow(wait, true);
+        break;
+      case 'wait':
+        this.__hideOrshow(play, true);
+        this.__hideOrshow(stop, true);
+        this.__hideOrshow(wait);
         break;
       default:
         break;
     }
   }
+
+  __hideOrshow(el, hide = false) {
+    if (hide) {
+      el.classList.add('hide');
+      el.classList.remove('show');
+    }
+    else {
+      el.classList.add('show');
+      el.classList.remove('hide');
+
+    }
+  }
+
   __changeState() {
     if (this.state == 'play') {
       this.state = 'stop';

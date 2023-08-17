@@ -4,31 +4,12 @@ const router = express.Router();
 const app = express();
 const multer = require('multer');
 const port = 33333;
-const {
-  getClubInfo,
-  getChannels,
-  restart,
-  getAdminPage,
-  getSettings,
-  saveSettings,
-  play,
-  stop
-} = require('./methods.js');
+const verbs = require('./methods.js');
 
 app.use(express.static(__dirname + '/assets'));
 app.use(express.urlencoded({ extended: false }));
 app.use(multer().none());
 app.use(router);
-const verbs = {
-  'getClubInfo': getClubInfo,
-  'getChannels': getChannels,
-  'restart': restart,
-  'getAdminPage': getAdminPage,
-  'getSettings': getSettings,
-  'saveSettings': saveSettings,
-  'play': play,
-  'stop': stop
-};
 
 router.route('/')
   .get((req, res) => {
@@ -36,7 +17,9 @@ router.route('/')
     if (req.query.page) {
       page = req.query.page;
     }
-    res.sendFile(path.join(`${__dirname}/pages/${page}.html`));
+    page = path.join(`${__dirname}/pages/${page}.html`);
+    res.sendFile(page);
+    console.log(`${page} sent to client`);
   })
   .post((req, res) => {
     const verb = req.body.verb;

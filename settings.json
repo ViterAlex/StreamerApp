@@ -21,6 +21,42 @@
       "key": "mw7x-b5td-bz7p-p46f-8cz0",
       "login": "",
       "password": ""
+    },
+    {
+      "name": "Зал 3",
+      "ip": "178.151.104.248",
+      "port": 554,
+      "url": "/cam/realmonitor?channel=1&subtype=0",
+      "key": "b5td-bz7p-p46f-8cz0",
+      "login": "",
+      "password": ""
+    },
+    {
+      "name": "Зал 4",
+      "ip": "178.151.104.248",
+      "port": 554,
+      "url": "/cam/realmonitor?channel=1&subtype=0",
+      "key": "mw7x-bz7p-p46f-8cz0",
+      "login": "",
+      "password": ""
+    },
+    {
+      "name": "Зал 5",
+      "ip": "178.151.104.248",
+      "port": 554,
+      "url": "/cam/realmonitor?channel=1&subtype=0",
+      "key": "mw7x-b5td-p46f-8cz0",
+      "login": "",
+      "password": ""
+    },
+    {
+      "name": "Зал 6",
+      "ip": "178.151.104.248",
+      "port": 554,
+      "url": "/cam/realmonitor?channel=1&subtype=0",
+      "key": "mw7x-b5td-bz7p-8cz0",
+      "login": "",
+      "password": ""
     }
   ],
   "cities": [
