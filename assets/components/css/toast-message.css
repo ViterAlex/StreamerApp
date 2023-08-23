@@ -20,6 +20,17 @@
   }
 }
 
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .toast {
   display: flex;
   border-radius: 2vh;
@@ -45,4 +56,14 @@
 
 .fail {
   background-color: #b8082e;
+}
+@media screen and (max-width:1080px) {
+  .toast {
+    animation:
+      slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both,
+      fade-out 3s ease-out both;
+    top: unset;
+    bottom: 0%;
+    width: calc(100% - 1em);
+  }
 }
