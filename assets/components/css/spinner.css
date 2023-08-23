@@ -32,7 +32,9 @@
   right: 0;
   margin: auto;
 }
-
+.hide>.circular {
+  animation: unset;
+}
 .path {
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;

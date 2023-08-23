@@ -46,9 +46,23 @@ const getSettings = () => {
   return settings;
 };
 
-const saveSettings = (params) => {
+const saveSettings = (params, res) => {
+  const settings = JSON.parse(fs.readFileSync(__dirname + '/settings.json', 'utf-8'));
   console.log(params);
-  return null;
+  settings.channels = [];
+  params.channels.forEach(ch => {
+    settings.channels.push(JSON.parse(ch));
+  });
+  settings.cities = [];
+  params.cities.forEach(city => {
+    settings.cities.push(JSON.parse(city));
+  });
+  for (const name of ['city', 'club', 'login', 'password']) {
+    settings[name] = params[name];
+  }
+  fs.writeFileSync(`${__dirname}/settings.json`, JSON.stringify(settings));
+  console.log(settings);
+  return "";
 };
 
 const play = (params) => {
@@ -78,7 +92,6 @@ const play = (params) => {
       }
 
     });
-  // console.log(channel);
 };
 
 const stop = (params) => {

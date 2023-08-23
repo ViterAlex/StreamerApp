@@ -82,3 +82,64 @@
 .animateWrapper>div {
   overflow: hidden;
 }
+
+input,
+button {
+  max-width: 150px;
+  border: var(--control-border);
+  outline: none;
+  border-radius: var(--border-radius);
+  min-height: 2rem;
+  margin: 0px;
+}
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  grid-area: header;
+  display: grid;
+  background-color: var(--footbik-color);
+  padding: 5px 5px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top {
+  align-self: start;
+}
+
+i:hover {
+  cursor: pointer;
+}
+
+.fa-xl {
+  line-height: unset;
+}
+
+.fa-xmark,
+.fa-trash-can {
+  color: #C82333;
+}
+
+input[type='text'],
+input[type='password'],
+button {
+  border: var(--input-border);
+  font-size: 1.25rem;
+  max-width: 150px;
+}
+
+input[type='text']:focus,
+input[type='password']:focus,
+button:focus {
+  border: var(--focus-border);
+}

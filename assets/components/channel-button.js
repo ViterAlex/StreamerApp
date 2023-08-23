@@ -1,5 +1,5 @@
-const template = document.createElement('template');
-template.innerHTML = `
+const toast_template = document.createElement('template');
+toast_template.innerHTML = `
     <link rel="stylesheet" href="/components/css/channel-button.css">
     <link rel="stylesheet" href="/components/css/spinner.css">
     <div>
@@ -28,7 +28,7 @@ class ChannelButton extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'closed' });
-    this.root.append(template.content.cloneNode(true));
+    this.root.append(toast_template.content.cloneNode(true));
   }
 
   get state() {
@@ -109,14 +109,14 @@ class ChannelButton extends HTMLElement {
     const wait = this.root.querySelector('#wait');
     switch (this.state) {
       case 'play':
-        this.__hideOrshow(play);
         this.__hideOrshow(stop, true);
         this.__hideOrshow(wait, true);
+        this.__hideOrshow(play);
         break;
       case 'stop':
         this.__hideOrshow(play, true);
-        this.__hideOrshow(stop);
         this.__hideOrshow(wait, true);
+        this.__hideOrshow(stop);
         break;
       case 'wait':
         this.__hideOrshow(play, true);

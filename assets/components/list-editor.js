@@ -1,7 +1,46 @@
+const list_editor_template = document.createElement('template');
+list_editor_template.innerHTML = `
+<link rel="stylesheet" href="/components/css/list-editor.css">
+    <div class="list-editor">
+      <div class="toolbar">
+        <div></div>
+        <div class="toolbar-items">
+          <a class="fas fa-plus" id="plus-icon" title="Додати"></a>
+          <a class="fas fa-save" id="save-icon" title="Зберегти"></a>
+          <a class="fas fa-xmark" id="discard-icon" title="Скасувати"></a>
+        </div>
+      </div>
+      <div class="list-items"></div>
+    </div>
+`;
+const list_item_template = document.createElement('template');
+list_item_template.innerHTML = `
+<div class='list-item'>
+      <input type="hidden" id="itemIndex">
+      <div class='item-content'>
+        <span id='item-content'></span>
+        <div class="action-items">
+          <a class="fas fa-pen" id="edit-icon" title="Редагувати"></a>
+          <a class="fas fa-caret-up" id="move-up-icon"
+            title="Перемістити вгору"></a>
+          <a class="fas fa-caret-down" id="move-down-icon"
+            title="Перемістити вниз"></a>
+          <a class="fas fa-trash-can" id="delete-icon" title="Видалити"></a>
+        </div>
+      </div>
+      <div class='item-editor hide'>
+        <input type='text' id='item-editor-input'>
+        <div class="action-items">
+          <a class="fas fa-check" id="apply-icon" title="Застосувати"></a>
+          <a class="fas fa-xmark" id="close-icon" title="Скасувати"></a>
+        </div>
+      </div>
+    </div>
+`;
 class ListEditor extends HTMLElement {
   constructor() {
     super();
-    this.clone = document.querySelector('#list-template').content.cloneNode(true);
+    this.clone = list_editor_template.content.cloneNode(true);
     this.root = this.attachShadow({ mode: 'closed' });
     this.root.appendChild(this.clone);
     /*{
@@ -118,7 +157,7 @@ class ListEditor extends HTMLElement {
         n++;
         continue;
       }
-      const cloneItem = document.querySelector(`#list-item`).content.cloneNode(true);
+      const cloneItem = list_item_template.content.cloneNode(true);
       cloneItem.querySelector('input#itemIndex').setAttribute('value', n);
 
       cloneItem.querySelector('#edit-icon').addEventListener('click', (ev) => {

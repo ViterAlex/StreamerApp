@@ -7,19 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Draft</title>
   <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
   <link rel="stylesheet" type="text/css" href="/css/fontawesome.min.css">
-  <template id="password-field-template">
-    <link rel="stylesheet" href="/components/css/password-field.css">
-    <div>
-      <button class="show play"><i class="fas fa-play "> </i> </button>
-      <button class="hide stop"><i class="fas fa-stop"></i> </button>
-    </div>
-  </template>
 </head>
 
 <body>
-  <div id="qrWrapper">
+  <div id="qrWrapper" class="hide">
     <a id="qrClose" href="#" class="close"></a>
     <a id="qrSave" title="Click to save" download="qr.png">
       <img id="qrImg" src="" alt="">
@@ -47,9 +40,9 @@
   </div>
 </body>
 <script src="/components/channel-button.js"></script>
-<script type="module" src=" /scripts/main.js"></script>
+<script type="module" src=" /scripts/index.js"></script>
 <script type="module">
-  import { setupEvents, getSettings, getStreams, getClubInfo } from "/scripts/main.js";
+    import { setupEvents, getSettings, getStreams, getClubInfo } from "/scripts/index.js";
   getSettings();
   setupEvents();
   getStreams();

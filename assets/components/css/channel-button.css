@@ -9,7 +9,9 @@ button {
   font-size: 4rem;
   color: white;
 }
-
+:host button {
+  max-width: unset;
+}
 #play {
   background-color: var(--play-bg);
 }

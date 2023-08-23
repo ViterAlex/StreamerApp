@@ -21,7 +21,7 @@ const createQr = (ev) => {
       const imgSrc = `data:image/png;base64,${btoa(String.fromCharCode.apply(null, new Uint8Array(xht.response)))}`;
       document.querySelector('#qrImg').setAttribute('src', imgSrc);
       document.querySelector('#qrSave').setAttribute('href', imgSrc);
-      document.querySelector('#qrWrapper').style.visibility = 'visible';
+      document.querySelector('#qrWrapper').classList.toggle('hide');
       document.querySelector('#qrText').value = '';
     }
   };
@@ -29,9 +29,10 @@ const createQr = (ev) => {
 };
 
 const hideQr = (ev) => {
-  document.querySelector('#qrWrapper').style.visibility = "collapse";
+  document.querySelector('#qrWrapper').classList.toggle('hide');
   document.querySelector('#qrImg').setAttribute('src', '');
   document.querySelector('#qrSave').setAttribute('href', '');
+  document.querySelector('#qrSave').setAttribute('download', '');
 };
 
 const setupEvents = () => {
@@ -64,7 +65,7 @@ const getChannels = () => {
     for (const channel of settings.channels) {
       const btn = document.createElement('channel-button');
       btn.key = channel.key;
-      btn.name= channel.name;
+      btn.name = channel.name;
       btn.addEventListener('click', (ev) => {
         xht('/', `verb=${ev.target.state}&key=${ev.target.key}`);
         ev.target.state = 'wait';
@@ -79,9 +80,9 @@ const getChannels = () => {
 };
 
 const getClubInfo = () => {
-  const wrapper = document.querySelector('.clubInfo');
-  const settings = JSON.parse(localStorage.getItem('settings'));
-  wrapper.innerHTML = `${settings.city} — ${settings.club}`;
+  document
+    .querySelector('.clubInfo')
+    .innerHTML = `${localStorage.getItem('selectedCity')} — ${localStorage.getItem('selectedClub')}`;
 };
 
 

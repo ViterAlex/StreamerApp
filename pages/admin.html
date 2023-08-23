@@ -7,62 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin page</title>
   <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <template id="list-template">
-    <link rel="stylesheet" href="/components/css/list-editor.css">
-    <div class="list-editor">
-      <div class="toolbar">
-        <div></div>
-        <div class="toolbar-items">
-          <a class="fas fa-plus" id="plus-icon" title="Додати"></a>
-          <a class="fas fa-save" id="save-icon" title="Зберегти"></a>
-          <a class="fas fa-xmark" id="discard-icon" title="Скасувати"></a>
-        </div>
-      </div>
-      <div class="list-items"></div>
-    </div>
-  </template>
-  <template id="list-item">
-    <div class='list-item'>
-      <input type="hidden" id="itemIndex">
-      <div class='item-content'>
-        <span id='item-content'></span>
-        <div class="action-items">
-          <a class="fas fa-pen" id="edit-icon" title="Редагувати"></a>
-          <a class="fas fa-caret-up" id="move-up-icon"
-            title="Перемістити вгору"></a>
-          <a class="fas fa-caret-down" id="move-down-icon"
-            title="Перемістити вниз"></a>
-          <a class="fas fa-trash-can" id="delete-icon" title="Видалити"></a>
-        </div>
-      </div>
-      <div class='item-editor hide'>
-        <input type='text' id='item-editor-input'>
-        <div class="action-items">
-          <a class="fas fa-check" id="apply-icon" title="Застосувати"></a>
-          <a class="fas fa-xmark" id="close-icon" title="Скасувати"></a>
-        </div>
-      </div>
-    </div>
-  </template>
+  <link rel="stylesheet" type="text/css" href="/css/admin.css">
 </head>
 
 <body>
   <div class="wrapper">
     <header>
-      <div>
-        <a class="fas fa-house fa-xl item-left headerIcon" href="/"
+      <a class="fas fa-house fa-xl item-left headerIcon" href="/"
         title="Повернутись"></a>
-        <i class="fas fa-plus fa-xl headerIcon" title="Додати канал"
+      <i class="fas fa-plus fa-xl headerIcon" title="Додати канал"
         id="addChannel"></i>
-        <i class="fas fa-floppy-disk fa-xl headerIcon" id="saveSettings"
+      <i class="fas fa-floppy-disk fa-xl headerIcon" id="saveSettings"
         title="Зберегти налаштування"></i>
-        <i class="fas fa-arrows-rotate fa-xl headerIcon" id="restartWebServer"
+      <i class="fas fa-arrows-rotate fa-xl headerIcon" id="restartWebServer"
         title="Перезапустити веб-сервер"></i>
-      </div>
     </header>
     <div class="content top">
-      <div class="row gap">
+      <div id="cityClubSelectors">
         <select name="cities" id="citiesSelect"></select>
         <i class="fas fa-pen" id="editCities" title="Редагувати міста"></i>
         <select name="clubs" id="clubsSelect"></select>
@@ -75,22 +36,19 @@
       </div>
       <form action="/" method="post" id="settingsForm">
         <input type="hidden" name="verb" value="saveSettings">
-        <div >
+        <div>
           <input type="text" name="login" id="login" placeholder="Логін">
-          <password-field name="password" id="password">
-          
-          </password-field>
+          <password-field name="password" id="password"></password-field>
         </div>
-        <div class="break height"></div>
-        <div class="" id="channelsWrapper">
+        <div id="channelsWrapper">
         </div>
-
       </form>
     </div>
   </div>
   <script src="/components/list-editor.js"></script>
   <script src="/components/password-field.js"></script>
   <script src="/components/channel-fields.js"></script>
+  <script src="/components/toast-message.js"></script>
   <script type="module">
     import { fillCities, fillChannels, assignEvents } from "/scripts/admin.js";
     fillCities();

@@ -26,7 +26,7 @@ router.route('/')
     if (verb) {
       console.log(`verb = ${verb}`);
       if (verbs[verb]) {
-        res.send(verbs[verb](req.body));
+        res.send(verbs[verb](req.body, res));
       }
     }
   });

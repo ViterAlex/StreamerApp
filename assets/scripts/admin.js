@@ -79,8 +79,6 @@ const assignEvents = () => {
   document.querySelector('#addChannel').addEventListener('click', (ev) => addChannel());
   document.querySelector('list-editor').addEventListener('onsave', (ev) => {
     editorSave();
-    // alert(`Saving ${editor.getAttribute('subject')}`)
-    // ev.target.parentElement.classList.remove('open');
   });
   document.querySelector('list-editor').addEventListener('ondiscard', (ev) => {
     ev.target.parentElement.classList.remove('open');
@@ -94,7 +92,23 @@ const assignEvents = () => {
     const fd = new FormData(form);
     fd.append('city', localStorage.getItem('selectedCity'));
     fd.append('club', localStorage.getItem('selectedClub'));
+    JSON.parse(localStorage.getItem('settings')).cities
+      .forEach((city, n) => {
+        fd.append(`cities[${n}]`, JSON.stringify(city));
+      });
     const x = new XMLHttpRequest();
+    x.onreadystatechange = () => {
+      const toast = document.createElement('toast-message');
+      if (x.status == 200) {
+        toast.message = 'Збережено';
+        toast.status = 'success';
+      }
+      else if (x.status == 404) {
+        toast.message = 'Помилка';
+        toast.status = 'fail';
+      }
+      document.body.append(toast);
+    };
     x.open('POST', '/');
     x.send(fd);
   });
@@ -176,7 +190,51 @@ const edit = (o) => {
 };
 
 const saveClubs = (editor) => {
+  let clubs = JSON.parse(localStorage.getItem('clubs'));
+  let empty = new Array(editor.__items.length);
+  for (let i = 0; i < empty.length; i++) {
+    const editedItem = editor.__items[i];
+    const item = clubs[editedItem.index];
+    const val = editedItem.newValue === ''
+      ? editedItem.value
+      : editedItem.newValue;
+    //deleted item
+    if (editedItem.deleted) {
+      empty[editedItem.index] = { deleted: true };
+      continue;
+    }
+    //added item
+    if (editedItem.index >= clubs.length) {
+      const idx = editedItem.newIndex > -1
+        ? editedItem.newIndex
+        : editedItem.index;
+      empty[idx] = val;
+      continue;
+    }
+    //moved item
+    if (editedItem.newIndex >= 0) {
+      empty[editedItem.newIndex] = val;
+      continue;
+    }
+    //edited item
+    if (editedItem.newValue !== '') {
+      empty[editedItem.index] = editedItem.newValue;
+      continue;
+    }
 
+    empty[i] = item;
+  }
+  empty = empty.filter(el => Object.keys(el).indexOf('deleted') == -1);
+  clubs = Array.from(empty);
+  const settings = JSON.parse(localStorage.getItem('settings'));
+  for (const city of settings.cities) {
+    if (city.name == localStorage.getItem('selectedCity')) {
+      city.clubs = clubs;
+      break;
+    }
+  }
+  localStorage.setItem('settings', JSON.stringify(settings));
+  localStorage.setItem('cities', JSON.stringify(settings.cities));
 };
 
 const saveCities = (editor) => {
@@ -217,8 +275,10 @@ const saveCities = (editor) => {
     empty[i] = clone(item);
   }
   empty = empty.filter(el => Object.keys(el).indexOf('deleted') == -1);
-  cities = Array.from(empty);
-  localStorage.setItem('cities', JSON.stringify(cities));
+  const settings = JSON.parse(localStorage.getItem('settings'));
+  settings.cities = Array.from(empty);
+  localStorage.setItem('settings', JSON.stringify(settings));
+  localStorage.setItem('cities', JSON.stringify(settings.cities));
 };
 
 export { assignEvents, edit, fillChannels, fillCities, restart };

@@ -52,6 +52,7 @@
 #item-editor-input {
   font-size: 1.25rem;
   max-width: 200px;
+  min-height: unset;
 }
 
 list-editor {
