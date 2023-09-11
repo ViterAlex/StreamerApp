@@ -1,10 +1,14 @@
+const fs = require('fs');
 const express = require('express');
-const path = require('path');
+const Path = require('path');
 const router = express.Router();
 const app = express();
 const multer = require('multer');
-const port = 33333;
 const verbs = require('./methods.js');
+const ChannelSettings = require("./ChannelsSettings");
+const StreamManager = require("./StreamManager");
+const path = require('path');
+const { Stream } = require('stream');
 
 app.use(express.static(__dirname + '/assets'));
 app.use(express.urlencoded({ extended: false }));
@@ -30,7 +34,10 @@ router.route('/')
       }
     }
   });
-app.listen(port, () => {
-  console.log(`Додаток стрімера запущено. Порт ${port}`);
+new ChannelSettings(`${__dirname}/settings.json`);
+new StreamManager(process.env.STREAMS);
+StreamManager.killThemAll();
+app.listen(process.env.PORT, () => {
+  console.log(`Додаток стрімера запущено. Порт ${process.env.PORT}`);
 });
 

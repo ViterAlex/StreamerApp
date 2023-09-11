@@ -7,6 +7,10 @@
   font-family: "Font Awesome 6 Free";
   src: url("/webfonts/fa-solid-900.woff2") format('woff2');
 }
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  src: url("/webfonts/fa-brands-400.woff2") format('woff2');
+}
 
 .fa {
   font-family: var(--fa-style-family, "Font Awesome 6 Free");
@@ -5493,6 +5497,9 @@
   content: "\59"
 }
 
+.fa-youtube::before {
+  content: "\f167";
+}
 .fa-person-snowboarding:before,
 .fa-snowboarding:before {
   content: "\f7ce"

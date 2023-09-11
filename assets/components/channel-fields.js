@@ -73,10 +73,7 @@ class ChannelFields extends HTMLElement {
   __inputChanged(ev) {
     const prop = ev.target.getAttribute('prop');
     let val = ev.target['value'];
-    if (val == "undefined") {
-      val = ev.target.getAttribute('value');
-    }
-    if (val == "undefined") {
+    if (ev.target.type == 'checkbox') {
       val = ev.target.checked;
     }
     this.channel[prop] = val;
@@ -87,10 +84,15 @@ class ChannelFields extends HTMLElement {
     const ch = JSON.parse(newValue);
     for (const key of Object.keys(this.channel)) {
       this.channel[key] = ch[key];
-      this.root.querySelector(`.${key}`).setAttribute('value', ch[key]);
+      const elem = this.root.querySelector(`.${key}`);
+      if (elem.type == 'checkbox') {
+        elem.setAttribute('checked', ch[key]);
+      }
+      else {
+        elem.setAttribute('value', ch[key]);
+      }
     }
     this.internals.setFormValue(JSON.stringify(this.channel));
-    // this.root.querySelector(`#${name}`).setAttribute('value', newValue);
   }
 }
 

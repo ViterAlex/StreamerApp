@@ -21,7 +21,8 @@ class ChannelButton extends HTMLElement {
     return [
       'name',
       'key',
-      'state'
+      'state',
+      'response'
     ];
   }
 
@@ -56,7 +57,9 @@ class ChannelButton extends HTMLElement {
 
   connectedCallback() {
     if (this.isConnected) {
-      this.state = 'play';
+      if (this.state == null) {
+        this.state = 'play';
+      }
       this.addEventListener('click', (ev) => {
         this.__changeState();
       });
@@ -84,12 +87,10 @@ class ChannelButton extends HTMLElement {
       case 'state':
         this.__stateChanged();
         break;
-      case 'onplay':
-      case 'onstop':
-        this.addEventListener(name, (ev) => {
-          const f = new Function('ev', newValue);
-          f.call(ev);
-        });
+      case 'response':
+        if (newValue) {
+          this.__changeState();
+        }
         break;
       default:
         break;

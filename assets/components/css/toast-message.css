@@ -36,7 +36,7 @@
   border-radius: 2vh;
   position: absolute;
   right: 0px;
-  top: 10%;
+  bottom: 0%;
   font-size: 4rem;
   color: white;
   background-color: #5b85c4;
@@ -62,8 +62,6 @@
     animation:
       slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both,
       fade-out 3s ease-out both;
-    top: unset;
-    bottom: 0%;
     width: calc(100% - 1em);
   }
 }

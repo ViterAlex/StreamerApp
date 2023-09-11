@@ -95,7 +95,7 @@ a#spoilerHeader:visited {
   display: inline-block;
 }
 
-.fancy-checkbox input[type="checkbox"]:checked~.unchecked {
+.fancy-checkbox input[type="checkbox" ]:checked~.unchecked {
   display: none;
 }
 

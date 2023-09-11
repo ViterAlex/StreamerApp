@@ -66,12 +66,14 @@ const getChannels = () => {
       const btn = document.createElement('channel-button');
       btn.key = channel.key;
       btn.name = channel.name;
+      btn.state = res[channel.key]
       btn.addEventListener('click', (ev) => {
-        xht('/', `verb=${ev.target.state}&key=${ev.target.key}`);
+        xht('/', `verb=${ev.target.state}&key=${ev.target.key}`, (resp) => {
+          setTimeout(() => {
+            ev.target.state = resp.state;
+          }, 3000);
+        });
         ev.target.state = 'wait';
-        setTimeout(() => {
-          ev.target.state = 'stop';
-        }, 3000);
       });
       wrapper.appendChild(btn);
     }

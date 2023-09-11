@@ -35,11 +35,12 @@ while getopts ":l:p:i:t:u:k:s:" opt; do
     ;;
   esac
 done
-echo "login=$login"
-echo "password=$password"
-echo "ip=$ip"
-echo "port=$port"
-echo "url=$url"
-echo "key=$key"
-echo "fullUrl=rtsp://$login:$password@$ip:$port$url"
-#ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://stream:Stream123@192.168.0.10:554/cam/realmonitor?channel=1&subtype=0" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/3jqg-3byr-kmhv-7wh0-46f4
+# echo "login=$login"
+# echo "password=$password"
+# echo "ip=$ip"
+# echo "port=$port"
+# echo "url=$url"
+# echo "key=$key"
+# echo "fullUrl=rtsp://$login:$password@$ip:$port$url"
+echo ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key
+ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1

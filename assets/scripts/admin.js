@@ -21,6 +21,8 @@ const fillCities = () => {
         clubsSelect.value = club;
       }
     }
+    document.querySelector('#clubsSelect')
+      .dispatchEvent(new Event('change'));
   });
   citiesSelect.innerHTML = '';
   //Заповнення списку з містами
@@ -97,11 +99,12 @@ const assignEvents = () => {
         fd.append(`cities[${n}]`, JSON.stringify(city));
       });
     const x = new XMLHttpRequest();
+    const toast = document.createElement('toast-message');
     x.onreadystatechange = () => {
-      const toast = document.createElement('toast-message');
-      if (x.status == 200) {
+      if (x.status == 200 && x.readyState == 4) {
         toast.message = 'Збережено';
         toast.status = 'success';
+        localStorage.setItem('settings', x.responseText);
       }
       else if (x.status == 404) {
         toast.message = 'Помилка';

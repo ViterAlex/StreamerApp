@@ -105,6 +105,7 @@ header {
   display: grid;
   background-color: var(--footbik-color);
   padding: 5px 5px;
+  align-items: center;
 }
 .row {
   display: flex;
