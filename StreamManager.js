@@ -1,7 +1,6 @@
 const fs = require('fs');
 const cs = require("./ChannelsSettings");
 const { exec } = require('child_process');
-const { stdout, stderr } = require('process');
 
 module.exports = class StreamManager {
   constructor(path) {
@@ -15,7 +14,6 @@ module.exports = class StreamManager {
       }
       StreamManager.instance = this;
     }
-    return StreamManager.instance;
   }
   /**
    * Starts streaming a channel with provided YouTube-key
@@ -39,7 +37,6 @@ module.exports = class StreamManager {
     this[key] = proc.pid + 1;
     this.save();
     return StreamManager.isStreaming(key);
-    // process.kill(proc.pid);
   }
 
   stop(key) {

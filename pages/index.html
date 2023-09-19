@@ -27,7 +27,8 @@
           <i class="fas fa-qrcode"></i> Зробити
           </button>
       </div>
-      <a href="https://www.youtube.com/livestreaming/manage" title="Запланувати на Youtube" target="_blank">
+      <a href="https://www.youtube.com/livestreaming/manage"
+        title="Запланувати на Youtube" target="_blank">
         <div></div>
         <i class="fa-brands fa-youtube fa-2x"></i>
       </a>
@@ -45,12 +46,11 @@
   </div>
 </body>
 <script src="/components/channel-button.js"></script>
-<script type="module" src=" /scripts/index.js"></script>
 <script type="module">
-    import { setupEvents, getSettings, getStreams, getClubInfo } from "/scripts/index.js";
+  import { setupEvents, getSettings, getChannels, getClubInfo } from "/scripts/index.js";
   getSettings();
   setupEvents();
-  getStreams();
+  getChannels();
   getClubInfo();
 
 </script>

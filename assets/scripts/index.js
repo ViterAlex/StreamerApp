@@ -7,38 +7,25 @@ const loaded = (ev) => {
     b.style.visibility = 'visible';
   }
 };
+
 const createQr = (ev) => {
-  const api = 'https://chart.googleapis.com/chart?';
-  const xht = new XMLHttpRequest();
-  const size = 540;
   const text = document.getElementById("qrText").value;
-  const src = `${api}chs=${size}x${size}&cht=qr&chl=${encodeURI(text)}`;
-  xht.open('POST', src, true);
-  xht.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
-  xht.responseType = "arraybuffer";
-  xht.onreadystatechange = () => {
-    if (xht.readyState == 4 && xht.status == 200) {
-      const imgSrc = `data:image/png;base64,${btoa(String.fromCharCode.apply(null, new Uint8Array(xht.response)))}`;
-      document.querySelector('#qrImg').setAttribute('src', imgSrc);
-      document.querySelector('#qrSave').setAttribute('href', imgSrc);
-      document.querySelector('#qrWrapper').classList.toggle('hide');
-      document.querySelector('#qrText').value = '';
-    }
-  };
-  xht.send();
+  xht('/', `verb=qr&text=${text}`, (resp) => {
+    document.querySelector('#qrImg').setAttribute('src', resp.data);
+    document.querySelector('#qrSave').setAttribute('href', resp.data);
+    document.querySelector('#qrWrapper').classList.toggle('hide');
+    document.querySelector('#qrText').value = '';
+  });
 };
 
 const hideQr = (ev) => {
   document.querySelector('#qrWrapper').classList.toggle('hide');
   document.querySelector('#qrImg').setAttribute('src', '');
-  document.querySelector('#qrSave').setAttribute('href', '');
-  document.querySelector('#qrSave').setAttribute('download', '');
 };
 
 const setupEvents = () => {
-  document.addEventListener('DOMContentLoaded', loaded);
-  document.querySelector('#qrClose').addEventListener('click', hideQr);
-  document.querySelector('#qrSave').addEventListener('click', hideQr);
+  document.querySelector('#qrClose').addEventListener('click', ev => hideQr(ev));
+  document.querySelector('#qrSave').addEventListener('click', ev => hideQr(ev));
   document.querySelector('#qrCreate').addEventListener('click', createQr);
   document.querySelector('footer .goToAdmin').addEventListener('click', goToAdminPage);
 };
@@ -66,7 +53,7 @@ const getChannels = () => {
       const btn = document.createElement('channel-button');
       btn.key = channel.key;
       btn.name = channel.name;
-      btn.state = res[channel.key]
+      btn.state = res[channel.key];
       btn.addEventListener('click', (ev) => {
         xht('/', `verb=${ev.target.state}&key=${ev.target.key}`, (resp) => {
           setTimeout(() => {
@@ -88,5 +75,5 @@ const getClubInfo = () => {
 };
 
 
-export { getClubInfo, getSettings, getChannels as getStreams, setupEvents };
+export { getChannels, getClubInfo, getSettings, setupEvents };
 
