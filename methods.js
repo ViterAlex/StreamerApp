@@ -92,7 +92,6 @@ const qr = (params, res) => {
   //to avoid error if text is empty
   const text = params.text == '' ? ' ' : params.text;
   const w = 300;
-  const canvas = createCanvas(w, w);
   const opts = {
     errorCorrectionLevel: 'H',
     width: w,
