@@ -1,10 +1,21 @@
 # Налаштування Termux
 1. [termux-services](https://wiki.termux.com/wiki/Termux-services), node.js, npm, pm2
-2. Створити службу streamerd
+2. `pkg update && pkg upgrade -y`
+3. `pkg install python nodejs`
+4. Створити службу streamerd
+```bash
+mkdir $PREFIX/var/service/streamerd/
+cd $PREFIX/var/service/streamerd
+nano run
+```
+Вставити код нижче
 ```bash
 #!/data/data/com.termux/files/usr/bin/sh
 pm2 start $PREFIX/share/streamer/ecosystem.config.js
+sv stop streamerd
 ```
+Зберегти файл. Дозволити його виконання `chmod +x run`
+
 3.Додати цю службу в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
   ```bash
   #!/data/data/com.termux/files/usr/bin/sh
@@ -12,6 +23,8 @@ pm2 start $PREFIX/share/streamer/ecosystem.config.js
   sshd
   streamerd
   ```
+4.Заватажити архів з релізом та розпакувати його в $PREFIX/share/streamer
+
 # StreamerApp
 1. Сайт працює на порту 33333
 2. Під час запуску та перезапуску сервера всі процеси `ffmpeg` знищуються
