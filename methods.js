@@ -3,68 +3,116 @@ const sm = require("./StreamManager");
 const cs = require("./ChannelsSettings");
 const { exec } = require('child_process');
 
-const getClubInfo = () => {
-  return JSON.stringify({
-    'city': cs.instance.city,
-    'club': cs.instance.club
-  });
+const getClubInfo = (_, res) => {
+  res
+    .status(200)
+    .send({
+      'city': cs.instance.city,
+      'club': cs.instance.club
+    });
 };
 
-const getChannels = () => {
-  const res = {};
+const getChannels = (_, res) => {
+  const result = {};
   for (const ch of cs.instance.channels) {
     if (sm.instance[ch.key] == undefined) {
-      res[ch.key] = 'play';
+      result[ch.key] = 'play';
     }
     else {
-      res[ch.key] = 'stop';
+      result[ch.key] = 'stop';
     }
   }
-  return res;
+  res
+    .status(200)
+    .send(result);
 };
 
-const getAdminPage = () => {
+const getAdminPage = (_, res) => {
   const html = fs.readFileSync(__dirname + '/pages/admin.html', 'utf-8');
-  return { 'html': html };
+  res
+    .status(200)
+    .send({ 'html': html });
 };
 
-const restart = () => {
+const restart = (_, res) => {
   exec('pm2 restart streamer_app', (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
-      return;
+      res
+        .status(500)
+        .send();
     }
     if (stderr) {
       console.log(`stderr: ${stderr}`);
-      return;
+      res
+        .status(500)
+        .send();
     }
     console.log(`stdout: ${stdout}`);
+    res
+      .status(200)
+      .send({ result: 'server restarted' });
   });
 };
 
-const getSettings = () => {
-  return cs.instance;
+const getSettings = (_, res) => {
+  res
+    .status(200)
+    .send(cs.instance);
 };
 
 const saveSettings = (params, res) => {
   cs.instance.fromObject(params);
   cs.instance.save();
-  return cs.instance;
+  res
+    .status(200)
+    .send(cs.instance);
 };
 
-const play = (params) => {
+const play = (params, res) => {
   const isStreaming = sm.instance.play(params.key);
-  const result = {key:params.key};
+  const result = { key: params.key };
   result.state = isStreaming ? 'stop' : 'play';
-  return result;
+  res
+    .status(200)
+    .send(result);
 };
 
-const stop = (params) => {
+const stop = (params, res) => {
   const isStreaming = sm.instance.stop(params.key);
-  const result = {key:params.key};
+  const result = { key: params.key };
   result.state = isStreaming ? 'stop' : 'play';
-  return result;
+  res
+    .status(200)
+    .send(result);
 };
+
+const qr = (params, res) => {
+  const qrcode = require('qrcode');
+  //to avoid error if text is empty
+  const text = params.text == '' ? ' ' : params.text;
+  const w = 300;
+  const canvas = createCanvas(w, w);
+  const opts = {
+    errorCorrectionLevel: 'H',
+    width: w,
+    height: w,
+    margin: 1
+  };
+  console.log(params);
+  qrcode.toDataURL(text, opts)
+    .then(url => {
+      res
+        .status(200)
+        .send({ data: url });
+    })
+    .catch(err => {
+      console.log(err);
+    }
+    );
+};
+
+
 
 module.exports = {
   getChannels,
@@ -73,6 +121,7 @@ module.exports = {
   getSettings,
   saveSettings,
   play,
+  qr,
   stop,
   restart,
 };

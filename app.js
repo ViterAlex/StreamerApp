@@ -1,6 +1,5 @@
 const fs = require('fs');
 const express = require('express');
-const Path = require('path');
 const router = express.Router();
 const app = express();
 const multer = require('multer');
@@ -8,8 +7,6 @@ const verbs = require('./methods.js');
 const ChannelSettings = require("./ChannelsSettings");
 const StreamManager = require("./StreamManager");
 const path = require('path');
-const { Stream } = require('stream');
-
 app.use(express.static(__dirname + '/assets'));
 app.use(express.urlencoded({ extended: false }));
 app.use(multer().none());
@@ -30,7 +27,8 @@ router.route('/')
     if (verb) {
       console.log(`verb = ${verb}`);
       if (verbs[verb]) {
-        res.send(verbs[verb](req.body, res));
+        //Method must send result through res
+        verbs[verb](req.body, res);
       }
     }
   });
