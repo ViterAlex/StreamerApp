@@ -5,8 +5,8 @@
   column-gap: 0.5vw;
   grid-template-areas:
     'name ip port url key audio delete'
-      'spoiler spoiler spoiler . . . .';
-      grid-template-columns: auto auto auto 1fr auto auto auto;
+    'spoiler spoiler spoiler . . . .';
+  grid-template-columns: auto auto auto 1fr auto auto auto;
 }
 
 * {
@@ -36,6 +36,7 @@ input[type='password']:focus,
 button:focus {
   border: var(--focus-border);
 }
+
 .name,
 .login {
   grid-area: name;
@@ -55,7 +56,7 @@ button:focus {
 .url {
   grid-area: url;
   place-self: center stretch;
-    max-width: unset;
+  max-width: unset;
 }
 
 .key {
@@ -85,25 +86,41 @@ a#spoilerHeader:visited {
   color: #C82333;
 }
 
-.fancy-checkbox input[type="checkbox"],
-.fancy-checkbox .checked {
+.fancy-checkbox input[type="checkbox"] {
   display: none;
   aspect-ratio: 1;
 }
 
-.fancy-checkbox input[type="checkbox"]:checked~.checked {
+.fancy-checkbox input[type="checkbox"]~.fa-volume-high {
+  display: none;
+}
+
+.fancy-checkbox input[type="checkbox"]~.fa-volume-mute {
   display: inline-block;
 }
 
-.fancy-checkbox input[type="checkbox" ]:checked~.unchecked {
+.fancy-checkbox input[type="checkbox"]:checked~.fa-volume-high {
+  display: inline-block;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked~.fa-volume-mute {
   display: none;
 }
+
+/* .fancy-checkbox input[type="checkbox"]:checked~.checked {
+  display: inline-block;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked~.unchecked {
+  display: none;
+} */
 
 .fancy-checkbox {
   grid-area: audio;
   align-self: center;
   aspect-ratio: 1;
 }
+
 @media screen and (max-width:1080px) {
   :host {
     grid-template-areas:
