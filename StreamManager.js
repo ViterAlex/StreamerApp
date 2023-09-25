@@ -20,6 +20,7 @@ module.exports = class StreamManager {
       console.error(`No channel with key '${key}'`);
       return;
     }
+    console.log(`Start streaming for key ${key}`);
     const login = channel.login ? channel.login : cs.instance.login;
     const password = channel.password ? channel.password : cs.instance.password;
     exec(`bash ${__dirname}/scripts/streamer.sh ` +
@@ -29,18 +30,26 @@ module.exports = class StreamManager {
       `-t '${channel.port}' ` +
       `-u '${channel.url}' ` +
       `-a '${channel.audio}' ` +
-      `-k '${channel.key}' `/*, (err, stdout, stderr) => {
-        if (err) {
+      `-k '${channel.key}' `, (err, stdout, stderr) => {
+        /*if (err) {
           console.log(err);
-        }
+        } }*/
         if (stdout) {
           console.log(stdout);
         }
-        if (stderr) {
-          console.log(stderr);
+        /*if (stderr) {
+          console.log(stderr);*/
         }
-    }*/);
-    return StreamManager.isStreaming(key);
+   );
+    execSync('sleep 2');
+    const result = StreamManager.isStreaming(key);
+    if (result) {
+      console.log(`Successfully started`);
+    }
+    else {
+      console.log(`Unable to start stream`);
+    }
+    return result;
   }
 
   stop(key) {
@@ -63,7 +72,12 @@ module.exports = class StreamManager {
     catch (error) {
       console.log(error);
     }
-    return StreamManager.isStreaming(key);
+    //Delay for 2 seconds to let the thread stop
+    execSync('sleep 2');
+    console.log(`Stream ${key} stopped`);
+    const result = StreamManager.isStreaming(key);
+    console.log(`isStreaming = ${result}`);
+    return result;
   }
 
   static killThemAll() {
