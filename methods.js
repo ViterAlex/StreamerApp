@@ -58,14 +58,8 @@ const getSettings = (_, res) => {
 };
 
 const saveSettings = (params, res) => {
-  console.log('Params:');
-  console.log(params);
-  console.log('Before save');
-  console.log(cs.instance);
   cs.fromObject(params);
   cs.instance.save();
-  console.log('After save');
-  console.log(cs.instance);
   res
     .status(200)
     .send(cs.instance);
