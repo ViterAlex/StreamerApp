@@ -98,8 +98,8 @@ const assignEvents = () => {
       .forEach((city, n) => {
         fd.append(`cities[${n}]`, JSON.stringify(city));
       });
-    const x = new XMLHttpRequest();
     const toast = document.createElement('toast-message');
+    const x = new XMLHttpRequest();
     x.onreadystatechange = () => {
       if (x.status == 200 && x.readyState == 4) {
         toast.message = 'Збережено';

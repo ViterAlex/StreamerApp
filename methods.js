@@ -31,7 +31,7 @@ const getAdminPage = (_, res) => {
 };
 
 const restart = (_, res) => {
-  exec('pm2 restart streamer_app', (error, stdout, stderr) => {
+  exec('pm2 reload streamer_app', (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       res

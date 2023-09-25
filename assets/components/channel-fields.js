@@ -56,9 +56,7 @@ class ChannelFields extends HTMLElement {
     if (!this.isConnected) {
       return;
     }
-    let count = 1
     this.root.querySelectorAll('.input').forEach(el => {
-      console.log(count++);
       el.addEventListener('change', (ev) => {
         this.__inputChanged(ev);
       });
@@ -74,9 +72,9 @@ class ChannelFields extends HTMLElement {
 
   __inputChanged(ev) {
     const prop = ev.target.getAttribute('prop');
-    let val = ev.target.getAttribute('value');
-    if (ev.target.type == 'checkbox') {
-      val = ev.target.checked;
+    let val = ev.target['value'];
+    if (ev.currentTarget.type == 'checkbox') {
+      val = ev.currentTarget.checked;
     }
     this.channel[prop] = val;
     this.internals.setFormValue(JSON.stringify(this.channel));

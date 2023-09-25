@@ -2,14 +2,14 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const app = express();
-// const multer = require('multer');
+const multer = require('multer');
 const verbs = require('./methods.js');
 const ChannelSettings = require("./ChannelsSettings");
 const StreamManager = require("./StreamManager");
 const path = require('path');
 app.use(express.static(__dirname + '/assets'));
 app.use(express.urlencoded({ extended: false }));
-// app.use(multer().none());
+app.use(multer().none());
 app.use(router);
 
 router.route('/')
