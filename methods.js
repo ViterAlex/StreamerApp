@@ -2,6 +2,7 @@ const fs = require('fs');
 const sm = require("./StreamManager");
 const cs = require("./ChannelsSettings");
 const { exec } = require('child_process');
+const { create } = require('domain');
 
 const getClubInfo = (_, res) => {
   res
@@ -15,12 +16,7 @@ const getClubInfo = (_, res) => {
 const getChannels = (_, res) => {
   const result = {};
   for (const ch of cs.instance.channels) {
-    if (sm.instance[ch.key] == undefined) {
-      result[ch.key] = 'play';
-    }
-    else {
-      result[ch.key] = 'stop';
-    }
+    result[ch.key] = sm.isStreaming(ch.key) ? 'stop' : 'play';
   }
   res
     .status(200)
@@ -35,7 +31,7 @@ const getAdminPage = (_, res) => {
 };
 
 const restart = (_, res) => {
-  exec('pm2 restart streamer_app', (error, stdout, stderr) => {
+  exec('pm2 reload streamer_app', (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       res
@@ -62,7 +58,7 @@ const getSettings = (_, res) => {
 };
 
 const saveSettings = (params, res) => {
-  cs.instance.fromObject(params);
+  cs.fromObject(params);
   cs.instance.save();
   res
     .status(200)
@@ -103,7 +99,9 @@ const qr = (params, res) => {
     .then(url => {
       res
         .status(200)
-        .send({ data: url });
+        .send({
+          data: url
+        });
     })
     .catch(err => {
       console.log(err);

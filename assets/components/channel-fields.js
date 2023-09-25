@@ -11,8 +11,8 @@ class ChannelFields extends HTMLElement {
 <input type="text" class="input key" prop="key" placeholder="Ключ YouTube">
 <label class="fancy-checkbox">
   <input class="input audio" prop="audio" type="checkbox" >
-  <i class="fas fa-volume-high checked" title="Звук ввімкнено"></i>
-  <i class="fas fa-volume-mute unchecked" title="Звук вимкнено"></i>
+  <i class="fas fa-volume-high " title="Звук ввімкнено"></i>
+  <i class="fas fa-volume-mute " title="Звук вимкнено"></i>
 </label>
 <button class='delete' title="Видалити канал">
   <i class="fas fa-trash-can"></i>
@@ -73,8 +73,8 @@ class ChannelFields extends HTMLElement {
   __inputChanged(ev) {
     const prop = ev.target.getAttribute('prop');
     let val = ev.target['value'];
-    if (ev.target.type == 'checkbox') {
-      val = ev.target.checked;
+    if (ev.currentTarget.type == 'checkbox') {
+      val = ev.currentTarget.checked;
     }
     this.channel[prop] = val;
     this.internals.setFormValue(JSON.stringify(this.channel));
@@ -86,7 +86,9 @@ class ChannelFields extends HTMLElement {
       this.channel[key] = ch[key];
       const elem = this.root.querySelector(`.${key}`);
       if (elem.type == 'checkbox') {
-        elem.setAttribute('checked', ch[key]);
+        if (ch[key]) {
+          elem.setAttribute('checked', '');
+        }
       }
       else {
         elem.setAttribute('value', ch[key]);

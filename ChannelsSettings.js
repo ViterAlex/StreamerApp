@@ -12,22 +12,21 @@ module.exports = class ChannelsSettings {
       ChannelsSettings.filePath = path;
       ChannelsSettings.instance = this;
     }
-    return ChannelsSettings.instance;
   }
 
-  fromObject(obj) {
-    this.__clear();
-    this.login = obj.login;
-    this.password = obj.password;
-    this.city = obj.city;
-    this.club = obj.club;
-    this.channels = [];
+  static fromObject(obj) {
+    ChannelsSettings.instance.__clear();
+    ChannelsSettings.instance.login = obj.login;
+    ChannelsSettings.instance.password = obj.password;
+    ChannelsSettings.instance.city = obj.city;
+    ChannelsSettings.instance.club = obj.club;
+    ChannelsSettings.instance.channels = [];
     for (const ch of obj.channels) {
-      this.channels.push(JSON.parse(ch));
+      ChannelsSettings.instance.channels.push(JSON.parse(ch));
     }
-    this.cities = [];
+    ChannelsSettings.instance.cities = [];
     for (const city of obj.cities) {
-      this.cities.push(JSON.parse(city));
+      ChannelsSettings.instance.cities.push(JSON.parse(city));
     }
   }
 

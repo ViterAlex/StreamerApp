@@ -32,10 +32,28 @@ router.route('/')
       }
     }
   });
+
+const onServerStop = () => {
+  console.log('Зупинення всіх трансляцій');
+  StreamManager.killThemAll();
+  console.log('Видалення файлів журналів');
+  for (const ch of ChannelSettings.instance.channels) {
+    try {
+      fs.unlinkSync(`/data/data/com.termux/files/usr/var/services/streamerd/${ch.key}.log`);
+    } catch {
+      continue;
+    }
+  }
+  server.close(() => {
+    console.log('Сервер зупинено');
+  });
+};
 new ChannelSettings(`${__dirname}/settings.json`);
 new StreamManager(process.env.STREAMS);
 StreamManager.killThemAll();
-app.listen(process.env.PORT, () => {
+
+const server = app.listen(process.env.PORT, () => {
   console.log(`Додаток стрімера запущено. Порт ${process.env.PORT}`);
 });
-
+process.on('SIGINT', () => onServerStop());
+process.on('SIGTERM', () => onServerStop());

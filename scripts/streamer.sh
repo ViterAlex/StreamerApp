@@ -2,7 +2,7 @@
 echo "========================"
 echo "streamer.sh"
 echo "========================"
-while getopts ":l:p:i:t:u:k:s:" opt; do
+while getopts ":l:p:i:t:u:k:a:" opt; do
   case $opt in
   l)
 	  login="$OPTARG"
@@ -22,8 +22,8 @@ while getopts ":l:p:i:t:u:k:s:" opt; do
   k)
 	  key="$OPTARG"
 	  ;;
-  s)
-	  sound="$OPTARG"
+  a)
+	  audio="$OPTARG"
     ;;
   \?)
     echo "Invalid option: -$OPTARG" >&2
@@ -40,7 +40,17 @@ done
 # echo "ip=$ip"
 # echo "port=$port"
 # echo "url=$url"
+# echo "audio=$audio"
 # echo "key=$key"
 # echo "fullUrl=rtsp://$login:$password@$ip:$port$url"
-echo ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key
-ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
+
+if [ $audio == true ]
+then
+  echo "Стрім зі звуком"
+  echo ffmpeg -f lavfi -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -c:a aac -filter:a "volume=2.0" -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
+  ffmpeg -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -c:a aac -filter:a "volume=2.0" -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
+else
+  echo "Стрім без звуку"
+  echo ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key
+  ffmpeg -f lavfi -i anullsrc -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
+fi
