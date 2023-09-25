@@ -1,7 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/sh
-echo "========================"
-echo "streamer.sh"
-echo "========================"
 while getopts ":l:p:i:t:u:k:a:" opt; do
   case $opt in
   l)
@@ -47,7 +44,7 @@ done
 if [ $audio == true ]
 then
   echo "Стрім зі звуком"
-  echo ffmpeg -f lavfi -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -c:a aac -filter:a "volume=2.0" -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
+  echo ffmpeg -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -c:a aac -filter:a "volume=2.0" -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
   ffmpeg -rtsp_transport udp -i "rtsp://$login:$password@$ip:$port$url" -c:v copy -pix_fmt yuv420p -c:a aac -filter:a "volume=2.0" -f flv rtmp://a.rtmp.youtube.com/live2/$key>$PREFIX/var/service/streamerd/$key.log 2>&1
 else
   echo "Стрім без звуку"

@@ -4,7 +4,6 @@ const { exec, execSync } = require('child_process');
 
 module.exports = class StreamManager {
   constructor(path) {
-    // fs.writeFileSync(path, JSON.stringify({}, undefined, 2));
     StreamManager.filePath = path;
     if (!StreamManager.instance) {
       StreamManager.instance = this;
@@ -33,13 +32,14 @@ module.exports = class StreamManager {
       `-k '${channel.key}' `, (err, stdout, stderr) => {
         /*if (err) {
           console.log(err);
-        } }*/
+        }*/
         if (stdout) {
           console.log(stdout);
         }
         /*if (stderr) {
-          console.log(stderr);*/
-        }
+          console.log(stderr);
+        }*/
+    }
    );
     execSync('sleep 2');
     const result = StreamManager.isStreaming(key);
