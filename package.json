@@ -1,6 +1,6 @@
 {
   "name": "streamer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Webapp for managing Youtube live for Footbik",
   "main": "app.js",
   "scripts": {
