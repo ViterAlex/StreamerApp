@@ -56,9 +56,7 @@ const getChannels = () => {
       btn.state = res[channel.key];
       btn.addEventListener('click', (ev) => {
         xht('/', `verb=${ev.target.state}&key=${ev.target.key}`, (resp) => {
-          setTimeout(() => {
-            ev.target.state = resp.state;
-          }, 3000);
+          ev.target.state = resp.state;
         });
         ev.target.state = 'wait';
       });

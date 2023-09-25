@@ -1,17 +1,12 @@
-const fs = require('fs');
 const cs = require("./ChannelsSettings");
-const { exec } = require('child_process');
+
+const { exec, execSync } = require('child_process');
 
 module.exports = class StreamManager {
   constructor(path) {
-    fs.writeFileSync(path, JSON.stringify({}, undefined, 2));
+    // fs.writeFileSync(path, JSON.stringify({}, undefined, 2));
     StreamManager.filePath = path;
     if (!StreamManager.instance) {
-      //TODO: Add check if file exists
-      const obj = JSON.parse(fs.readFileSync(StreamManager.filePath));
-      for (const prop of Object.keys(obj)) {
-        this[prop] = obj[prop];
-      }
       StreamManager.instance = this;
     }
   }
@@ -25,36 +20,64 @@ module.exports = class StreamManager {
       console.error(`No channel with key '${key}'`);
       return;
     }
+    console.log(`Start streaming for key ${key}`);
     const login = channel.login ? channel.login : cs.instance.login;
     const password = channel.password ? channel.password : cs.instance.password;
-    const proc = exec(`bash ${__dirname}/scripts/streamer.sh ` +
-      `-l "${login}" ` +
-      `-p "${password}" ` +
-      `-i "${channel.ip}" ` +
-      `-t "${channel.port}" ` +
-      `-u "${channel.url}" ` +
-      `-k "${channel.key}" `);
-    this[key] = proc.pid + 1;
-    this.save();
-    return StreamManager.isStreaming(key);
+    exec(`bash ${__dirname}/scripts/streamer.sh ` +
+      `-l '${login}' ` +
+      `-p '${password}' ` +
+      `-i '${channel.ip}' ` +
+      `-t '${channel.port}' ` +
+      `-u '${channel.url}' ` +
+      `-a '${channel.audio}' ` +
+      `-k '${channel.key}' `, (err, stdout, stderr) => {
+        /*if (err) {
+          console.log(err);
+        } }*/
+        if (stdout) {
+          console.log(stdout);
+        }
+        /*if (stderr) {
+          console.log(stderr);*/
+        }
+   );
+    execSync('sleep 2');
+    const result = StreamManager.isStreaming(key);
+    if (result) {
+      console.log(`Successfully started`);
+    }
+    else {
+      console.log(`Unable to start stream`);
+    }
+    return result;
   }
 
   stop(key) {
     try {
-      process.kill(this[key]);
-      delete this[key];
-      this.save();
-      fs.unlinkSync(`/data/data/com.termux/files/usr/var/service/streamerd/${key}.log`)
-      return false;
+      console.log('Run pgrep');
+      const pids = execSync(`pgrep -f ${key}`)
+        .toString()
+        .trim()
+        .split('\n',);
+      console.log(pids);
+      for (const pid of pids) {
+        try {
+          console.log(`Killing ${pid} process`);
+          process.kill(pid);
+        } catch (error) {
+          continue;
+        }
+      }
     }
     catch (error) {
       console.log(error);
-      return true;
     }
-  }
-
-  save() {
-    fs.writeFileSync(StreamManager.filePath, JSON.stringify(this, undefined, 2));
+    //Delay for 2 seconds to let the thread stop
+    execSync('sleep 2');
+    console.log(`Stream ${key} stopped`);
+    const result = StreamManager.isStreaming(key);
+    console.log(`isStreaming = ${result}`);
+    return result;
   }
 
   static killThemAll() {
@@ -70,12 +93,11 @@ module.exports = class StreamManager {
   }
 
   static isStreaming(key) {
-    //TODO Check if process exists by key
     try {
-      process.kill(StreamManager.instance[key], 0);
-      return false;
-    } catch (error) {
+      execSync(`pgrep -f ${key}`);
       return true;
+    } catch (error) {
+      return false;
     }
   }
 };
