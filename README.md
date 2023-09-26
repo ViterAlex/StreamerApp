@@ -1,8 +1,16 @@
 # Налаштування Termux
-1. [termux-services](https://wiki.termux.com/wiki/Termux-services), node.js, npm, pm2
+1. Встановити [termux-services](https://wiki.termux.com/wiki/Termux-services)
 2. `pkg update && pkg upgrade -y`
 3. `pkg install python nodejs`
-4. Створити службу streamerd
+4. Перевірити, що `nodejs` та `npm` встановлені коректно:
+'''
+node -v && npm -v
+'''
+5. Встановити `pm2`
+```
+npm install pm2@5.3.0 -g
+```
+6. Створити службу streamerd
 ```bash
 mkdir $PREFIX/var/service/streamerd/
 cd $PREFIX/var/service/streamerd
@@ -17,14 +25,14 @@ pm2 reload streamer_app
 ```
 Зберегти файл. Дозволити його виконання `chmod +x run`
 
-3.Додати цю службу в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
+7.Додати цю службу в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
   ```bash
   #!/data/data/com.termux/files/usr/bin/sh
   termux-wake-lock
   sshd
   streamerd
   ```
-4.Заватажити архів з релізом та розпакувати його в $PREFIX/share/streamer
+8.Заватажити архів з релізом та розпакувати його в $PREFIX/share/streamer
 ```bash
 wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.zip \
 && unzip ./streamer.zip -d $PREFIX/share/streamer
