@@ -6,6 +6,7 @@
 ```
 node -v && npm -v
 ```
+
 6. Встановити `pm2`
 ```
 npm install pm2@5.3.0 -g
