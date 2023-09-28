@@ -3,10 +3,10 @@
 2. `pkg update && pkg upgrade -y`
 3. `pkg install python nodejs`
 4. Перевірити, що `nodejs` та `npm` встановлені коректно:
-'''
+```
 node -v && npm -v
-'''
-5. Встановити `pm2`
+```
+6. Встановити `pm2`
 ```
 npm install pm2@5.3.0 -g
 ```
