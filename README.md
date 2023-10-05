@@ -48,3 +48,10 @@ wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.
   ```bash
   tail -f {key}.log
   ```
+# Зауваження
+На деяких приставках служба стартує некоректно. І в цьому випадку сайт не відкривається. Тоді треба в файл ~/.termux/boot/startup додати запуск вручну:
+export PORT=33333
+```bash
+node  $PREFIX/share/streamer/app.js
+```
+При цьому перезавантаження веб-сервера працювати не буде
