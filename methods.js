@@ -31,7 +31,8 @@ const getAdminPage = (_, res) => {
 };
 
 const restart = (_, res) => {
-  exec('pm2 reload streamer_app', (error, stdout, stderr) => {
+  const PREFIX = '/data/data/com.termux/files/usr';
+  exec(`node ${PREFIX}/bin/pm2 reload 0`, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       res

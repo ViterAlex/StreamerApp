@@ -3,10 +3,10 @@ module.exports = {
     {
       name: "streamer_app",
       script: "/data/data/com.termux/files/usr/share/streamer/app.js",
-      watch: true,
+      log_date_format: "YYYY-MM-DD HH:mm:ss,SSS",
+      watch: false,
       env: {
-        "PORT": 33333,
-        "STREAMS": "/data/data/com.termux/files/usr/tmp/streams.json"
+        "PORT": 33333
       },
       ignore_watch: [
         "node_modules",
