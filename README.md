@@ -3,35 +3,23 @@
 2. `pkg update && pkg upgrade -y`
 3. `pkg install wget python nodejs`
 4. Перевірити, що `nodejs` та `npm` встановлені коректно:
-```
+```bash
 node -v && npm -v
 ```
-
-6. Встановити `pm2`
-```
-npm install pm2@5.3.0 -g
-```
-6. Створити службу streamerd
+5.Створити папку в службах для ведення логів:
 ```bash
 mkdir $PREFIX/var/service/streamerd/
-cd $PREFIX/var/service/streamerd
-nano run
 ```
-Вставити код нижче
+6. Встановити `pm2`
 ```bash
-#!/data/data/com.termux/files/usr/bin/sh
-pm2 start $PREFIX/share/streamer/ecosystem.config.js
-sv stop streamerd
-pm2 reload streamer_app
+npm install pm2@5.3.0 -g
 ```
-Зберегти файл. Дозволити його виконання `chmod +x run`
-
 7.Додати цю службу в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
   ```bash
   #!/data/data/com.termux/files/usr/bin/sh
   termux-wake-lock
   sshd
-  streamerd
+  $PREFIX/bin/node $PREFIX/bin/pm2 start $PREFIX/share/streamer/ecosystem.config.js
   ```
 8.Заватажити архів з релізом та розпакувати його в $PREFIX/share/streamer
 ```bash
@@ -48,10 +36,3 @@ wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.
   ```bash
   tail -f {key}.log
   ```
-# Зауваження
-На деяких приставках служба стартує некоректно. І в цьому випадку сайт не відкривається. Тоді треба в файл ~/.termux/boot/startup додати запуск вручну:
-export PORT=33333
-```bash
-node  $PREFIX/share/streamer/app.js
-```
-При цьому перезавантаження веб-сервера працювати не буде
