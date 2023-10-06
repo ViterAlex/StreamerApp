@@ -14,7 +14,7 @@ mkdir $PREFIX/var/service/streamerd/
 ```bash
 npm install pm2@5.3.0 -g
 ```
-7.Додати цю службу в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
+7.Додати запуск веб-сервера в [автозапуск Termux](https://wiki.termux.com/wiki/Termux:Boot): ~/.termux/boot/startup
   ```bash
   #!/data/data/com.termux/files/usr/bin/sh
   termux-wake-lock
@@ -28,8 +28,9 @@ wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.
 ```
 9.Якщо виконується оновлення і стрімер вже працює, то розпаковку робити із збереженням налаштувань:
 ```
- wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.zip \
-&& unzip -o -q ./streamer.zip -d $PREFIX/share/streamer -x settings.json
+wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.zip \
+&& unzip -o -q ./streamer.zip -d $PREFIX/share/streamer -x settings.json \
+&& pm2 reload 0
 ```
 # StreamerApp
 1. Сайт працює на порту 33333
