@@ -24,7 +24,12 @@ npm install pm2@5.3.0 -g
 8.Заватажити архів з релізом та розпакувати його в $PREFIX/share/streamer
 ```bash
 wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.zip \
-&& unzip ./streamer.zip -d $PREFIX/share/streamer
+&& unzip -q ./streamer.zip -d $PREFIX/share/streamer
+```
+9.Якщо виконується оновлення і стрімер вже працює, то розпаковку робити із збереженням налаштувань:
+```
+ wget https://github.com/ViterAlex/StreamerApp/releases/latest/download/streamer.zip \
+&& unzip -o -q ./streamer.zip -d $PREFIX/share/streamer -x settings.json
 ```
 # StreamerApp
 1. Сайт працює на порту 33333
