@@ -1,4 +1,6 @@
 import xht from './xht.js';
+const logo = new Image();
+logo.src = '/img/favicon-qr.png';
 
 const loaded = (ev) => {
   //make request to server, parse json, show buttons
@@ -11,8 +13,20 @@ const loaded = (ev) => {
 const createQr = (ev) => {
   const text = document.getElementById("qrText").value;
   xht('/', `verb=qr&text=${text}`, (resp) => {
-    document.querySelector('#qrImg').setAttribute('src', resp.data);
-    document.querySelector('#qrSave').setAttribute('href', resp.data);
+    const canvas = document.createElement('canvas');
+    canvas.height = 300;
+    const ctx = canvas.getContext('2d');
+    const img = document.querySelector('#qrImg');
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0);
+      const dx = (img.clientWidth - logo.width) / 2;
+      const dy = (img.clientHeight - logo.height) / 2;
+      ctx.drawImage(logo, dx, dy);
+      img.onload = null;
+      img.setAttribute('src', canvas.toDataURL());
+      document.querySelector('#qrSave').setAttribute('href', canvas.toDataURL());
+    };
+    img.setAttribute('src', resp.data);
     document.querySelector('#qrWrapper').classList.toggle('hide');
     document.querySelector('#qrText').value = '';
   });

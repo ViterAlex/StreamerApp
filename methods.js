@@ -93,6 +93,10 @@ const qr = (params, res) => {
     errorCorrectionLevel: 'H',
     width: w,
     height: w,
+    color: {
+      dark: "#5D4E9AFF",
+      light: "#FFFF"
+    },
     margin: 1
   };
   console.log(params);
