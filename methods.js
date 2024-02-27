@@ -1,7 +1,7 @@
 const fs = require('fs');
 const sm = require("./StreamManager");
 const cs = require("./ChannelsSettings");
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const { create } = require('domain');
 
 const getClubInfo = (_, res) => {
@@ -51,6 +51,23 @@ const restart = (_, res) => {
       .send({ result: 'server restarted' });
   });
 };
+
+const restartSSH = (_, res) => {
+  try {
+    execSync("pkill sshd");
+    execSync("sshd");
+    console.log('SSH restarted');
+    res
+      .status(200)
+      .send({ result: 'ssh restarted' })
+  }
+  catch (error) {
+    console.log('restart SSH failed');
+    res
+      .status(501)
+      .send();
+  }
+}
 
 const getSettings = (_, res) => {
   res
@@ -126,4 +143,5 @@ module.exports = {
   qr,
   stop,
   restart,
+  restartSSH
 };

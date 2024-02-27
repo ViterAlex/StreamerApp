@@ -78,6 +78,7 @@ const assignEvents = () => {
   document.querySelector('#editCities').addEventListener('click', (ev) => edit('cities'));
   document.querySelector('#editClubs').addEventListener('click', (ev) => edit('clubs'));
   document.querySelector('#restartWebServer').addEventListener('click', (ev) => restart());
+  document.querySelector('#restartSSH').addEventListener('click', (ev) => restartSSH());
   document.querySelector('#addChannel').addEventListener('click', (ev) => addChannel());
   document.querySelector('list-editor').addEventListener('onsave', (ev) => {
     editorSave();
@@ -161,6 +162,21 @@ const addChannel = () => {
 const restart = () => {
   xht('/', 'verb=restart', (res) => {
     location.reload();
+  });
+};
+
+const restartSSH = () => {
+  const toast = document.createElement('toast-message');
+  xht('/', 'verb=restartSSH', (res) => {
+    if (res.status == 200) {
+      toast.message = 'SSH запущено';
+      toast.status = 'success';
+    }
+    else {
+      toast.message = 'Не вдалося запустити SSH';
+      toast.status = 'fail';
+    }
+    document.body.append(toast);
   });
 };
 
@@ -284,5 +300,5 @@ const saveCities = (editor) => {
   localStorage.setItem('cities', JSON.stringify(settings.cities));
 };
 
-export { assignEvents, edit, fillChannels, fillCities, restart };
+export { assignEvents, edit, fillChannels, fillCities, restart, restartSSH };
 
