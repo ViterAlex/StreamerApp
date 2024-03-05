@@ -1,13 +1,16 @@
-export default function  xht (url, params, onready) {
+export default function xht(url, params, onready) {
   const x = new XMLHttpRequest();
   x.open('POST', url, true);
   x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   x.responseType = 'json';
-  x.onreadystatechange = () => {
-    if (x.readyState == 4 && x.status == 200) {
+  x.onload = () => {
+    if (x.status==200) {
       onready(x.response);
     }
-    console.log(x.response);
-  };
+    else {
+      onready(x.response);
+      console.log(JSON.stringify(x.response));
+    }
+  }
   x.send(params);
 };

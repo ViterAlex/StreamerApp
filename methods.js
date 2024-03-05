@@ -59,13 +59,13 @@ const restartSSH = (_, res) => {
     console.log('SSH restarted');
     res
       .status(200)
-      .send({ result: 'ssh restarted' })
+      .send({ result: 'ssh restarted', status: 200 })
   }
   catch (error) {
     console.log('restart SSH failed');
     res
       .status(501)
-      .send();
+      .send({ status: 501 });
   }
 }
 

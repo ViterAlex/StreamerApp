@@ -169,7 +169,7 @@ const restartSSH = () => {
   const toast = document.createElement('toast-message');
   xht('/', 'verb=restartSSH', (res) => {
     if (res.status == 200) {
-      toast.message = 'SSH запущено';
+      toast.message = 'SSH запущений';
       toast.status = 'success';
     }
     else {
