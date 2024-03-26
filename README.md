@@ -1,7 +1,7 @@
 # Налаштування Termux
 1. Встановити [termux-services](https://wiki.termux.com/wiki/Termux-services)
 2. `pkg update && pkg upgrade -y`
-3. `pkg install wget python nodejs`
+3. `pkg install ffmpeg wget python nodejs`
 4. Перевірити, що `nodejs` та `npm` встановлені коректно:
 ```bash
 node -v && npm -v
