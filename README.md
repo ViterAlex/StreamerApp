@@ -1,5 +1,5 @@
 # Налаштування Termux
-1. Встановити [termux-services](https://wiki.termux.com/wiki/Termux-services)
+1. Встановити [termux-services](https://wiki.termux.com/wiki/Termux-services) `pkg install termux-services -y`
 2. `pkg update && pkg upgrade -y`
 3. `pkg install openssh`
 4. Запустити сервер ssh `sshd`
